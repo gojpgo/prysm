@@ -12,6 +12,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/ethclient"
+	p "github.com/ethereum/go-ethereum/params"
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"
@@ -263,6 +264,7 @@ func generateGenesis(ctx context.Context) (state.BeaconState, error) {
 		gen.Config.ShanghaiTime = interop.GethShanghaiTime(f.GenesisTime, params.BeaconConfig())
 		gen.Config.CancunTime = interop.GethCancunTime(f.GenesisTime, params.BeaconConfig())
 		gen.Config.PragueTime = interop.GethPragueTime(f.GenesisTime, params.BeaconConfig())
+		gen.Config.BlobScheduleConfig = p.DefaultBlobSchedule
 
 		fields := logrus.Fields{}
 		if gen.Config.ShanghaiTime != nil {

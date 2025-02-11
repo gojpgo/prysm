@@ -1,3 +1,15 @@
+# Modifications Made in the Pectra Branch
+
+The idea of this repository is to pull latest changes of prysm into this fork repository and use the develop branch for it. Then, the develop branch can be merged locally into the pectra branch which contains further adjustments if necessary. The public pectra branch of this repository can be used by build pipelines.
+
+## Changes of the prysm repository
+- using latest go-ethereum module (ran go mod tidy)
+- once a new go.sum has been created, check go.sum for the `github.com/ethereum/go-ethereum v1.15.0` entry (*not the entry that contanins v1.15.0/go.mod*) and take the checksum (e.g. `h1:LLb2jCPsbJZcB4INw+E/MgzUX5wlR6SdwXcv09/1ME4=`) and copy the checksum into the go_repository entry (in the file `deps.bzl`) which contains the `importpath = "github.com/ethereum/go-ethereum"`. Make sure to overwrite the checksum of the `sum` value in the go_repository.
+- changed the `cmd/prysmctl/testnet/BUILD.bazel` file and added the line `"@com_github_ethereum_go_ethereum//params:go_default_library"`.
+- changed the `cmd/prysmctl/testnet/generate_genesis.go` and added the line `gen.Config.BlobScheduleConfig = p.DefaultBlobSchedule` as well as the import path `p "github.com/ethereum/go-ethereum/params"`.
+- after changing the import paths, you can compile new changes with `bazel build //cmd/...` (and clean false bazel loads with `bazel clean --expunge`).
+- now you can run the code using the `bazel run` commands.
+
 # Prysm: An Ethereum Consensus Implementation Written in Go
 
 [![Build status](https://badge.buildkite.com/b555891daf3614bae4284dcf365b2340cefc0089839526f096.svg?branch=master)](https://buildkite.com/prysmatic-labs/prysm)
